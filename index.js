@@ -116,6 +116,7 @@ function forwardRequestToNodeServer(server, event, context) {
     try {
         const requestOptions = mapApiGatewayEventToHttpRequest(event, context, getSocketPath(server._socketPathSuffix))
         const req = http.request(requestOptions, (response, body) => forwardResponseToApiGateway(server, response, context))
+        req.awsContext = context
         if (event.body) {
             if (event.isBase64Encoded) {
                 event.body = new Buffer(event.body, 'base64')
